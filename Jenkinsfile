@@ -1,5 +1,9 @@
 node {
 
+    stage('Clean Workspace') {
+        cleanWs()
+    }
+
     stage('Checkout') {
         checkout scm
     }
@@ -32,5 +36,11 @@ node {
                 error "Quality Gate Failed"
             }
         }
+    }
+
+    stage('Notification') {
+        mail to: 'nk6638844@gmail.com',
+             subject: "Build ${currentBuild.currentResult}: ${env.JOB_NAME}",
+             body: "Build ${currentBuild.currentResult} - Check console output"
     }
 }
